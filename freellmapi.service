@@ -1,0 +1,16 @@
+[Unit]
+Description=FreeLLMAPI router (free LLM pool, OpenAI-compatible)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/freellmapi
+EnvironmentFile=/opt/freellmapi/.env
+ExecStart=/usr/bin/node server/dist/index.js
+Restart=always
+RestartSec=5
+MemoryMax=1G
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

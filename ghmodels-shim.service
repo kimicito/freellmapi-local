@@ -1,0 +1,14 @@
+[Unit]
+Description=GitHub Models -> OpenAI JSON shim (for freellmapi)
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /root/.openclaw/workspace/tools/ghmodels_shim.py
+Restart=always
+RestartSec=5
+MemoryMax=256M
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
