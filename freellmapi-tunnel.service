@@ -1,0 +1,18 @@
+[Unit]
+Description=Reverse SSH tunnel: pricewise VPS 127.0.0.1:3001 -> local freellmapi
+After=network-online.target freellmapi.service
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/ssh -i /root/.openclaw/secrets/freellmapi-tunnel \
+  -o StrictHostKeyChecking=no -o BatchMode=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
+  -o ExitOnForwardFailure=yes -N \
+  -R 127.0.0.1:8301:127.0.0.1:3001 \
+  root@200.165.227.84
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target

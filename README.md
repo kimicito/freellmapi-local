@@ -50,3 +50,11 @@ curl -s http://127.0.0.1:3001/v1/chat/completions \
 - hy-memory pro: LLM-конденсация чанков в L2-факты (`MEMORY_LLM_*` в `hy-memory.env.example`)
 - Фоновые cron-задачи без расхода лимитов основной сессии
 - Единая точка для смены провайдера без правки скриптов
+
+## Туннель на VPS pricewize (добавлено 18.10)
+
+Pricewise на timeweb (200.165.227.84) получает LLM через reverse SSH-туннель на этом хосте:
+- `freellmapi-tunnel.service` (этот хост): `-R 127.0.0.1:8301:127.0.0.1:3001 root@200.165.227.84`, Restart=always, ключ `secrets/freellmapi-tunnel` (ed25519, добавлен в authorized_keys VPS)
+- На VPS LLM endpoint: `http://127.0.0.1:8301/v1` (только loopback, GatewayPorts=no)
+- ⚠️ Порт 3001 на VPS занят чужим сервисом (/opt/safemind), поэтому 8301
+- Проверено end-to-end 18.10: VPS → 8301 → freellmapi → OpenRouter free → ответ
